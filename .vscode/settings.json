@@ -1,0 +1,16 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.quickSuggestions": {
+        "other": "off"
+    },
+    "[javascript]":
+    {
+    "editor.quickSuggestions": {
+        "comments": "off",
+        "strings": "off",
+        "other": "off"
+    },
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.parameterHints.enabled": false
+    }
+}

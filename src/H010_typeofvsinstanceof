@@ -1,0 +1,3 @@
+console.log(typeof []);        // typeof [] → "object" (because arrays are objects)
+console.log([] instanceof Array); // [] instanceof Array → true (because arrays come from the Array constructor)
+
