@@ -1,0 +1,157 @@
+JavaScript Loops & Iteration — Summary Notes
+🎯 Core Takeaway:
+
+JavaScript loops are more flexible than Java’s because JS supports functional looping (like .map(), .forEach()), iterable-based loops (for...of), and object property loops (for...in).
+Each loop has a specific purpose — choosing the right one makes your code clean, efficient, and readable.
+
+🔹 1. forEach() — Perform an action for each element
+
+Use when: You want to run code for each array element, but don’t need to return a new array.
+
+sytax <array>.forEach((currentvalue, index, array) => {//steps})
+
+currentvalue is mandatory
+
+
+✅ Key Points:
+
+Runs once for each element.
+
+Cannot use break, continue, or await.
+
+Common for logging, UI actions, or printing.
+
+🔹 2. map() — Transform data (returns a new array)
+
+Use when: You want to create a new modified array from existing data.
+
+✅ Key Points:
+
+Returns a new array.
+
+Doesn’t modify original data.
+
+Best for transforming test IDs, strings, or selectors.
+
+Cannot use await.
+
+🔹 3. for...of — Iterate over values of iterables (arrays, strings, maps, etc.)
+
+Use when: You need readable syntax, support for break, continue, or await.
+
+
+✅ Key Points:
+
+Works on arrays, strings, Sets, Maps.
+
+You can use await inside (important for Playwright).
+
+Cleaner than traditional for loop.
+
+
+🔹 4. for...in — Iterate over object keys
+
+Use when: You want to loop through all keys of an object.
+
+✅ Key Points:
+
+Gives keys, not values.
+
+Works on objects, not arrays (arrays → use for...of).
+
+Does not preserve order.
+
+⚠️ Note: Can pick up inherited properties (not ideal for Maps).
+
+🔹 5. Object.entries() — Cleaner key/value loop for objects
+
+Use when: You need both key and value directly.
+
+
+✅ Key Points:
+
+Converts object → array of [key, value].
+
+Works perfectly with for...of.
+
+Cleaner alternative to for...in.
+
+🔹 6. do...while — Run at least once
+
+Use when: You want a loop to run once before condition check.
+
+✅ Key Points:
+
+Condition checked after execution.
+
+Great for “try until condition met” logic.
+
+🔹 7. Loop Control — break & continue
+
+Use when: You want to control the flow of a loop.
+
+
+✅ Key Points:
+
+break: exit loop early.
+
+continue: skip current iteration.
+
+Not available inside .forEach().
+
+🔹 8. Nested Loops (Matrix or Combination Use)
+
+Use when: You need to combine two sets.
+
+
+
+✅ Key Points:
+
+Useful for generating combinations (like test case pairs).
+
+Nested .forEach() works for small sets; prefer for...of for async work.
+
+🔹 9. .entries() on Arrays — Get index and value together
+
+Use when: You want index + value with for...of.
+
+
+✅ Key Points:
+
+Avoids manually tracking index.
+
+Very clean syntax for enumerating test steps.
+
+🔹 10. Looping with Async (await)
+
+Use when: You must execute async actions in sequence (e.g., Playwright clicks).
+
+
+✅ Key Points:
+
+for...of supports await.
+
+.forEach() does not wait for async actions.
+
+Crucial for sequential UI test steps.
+
+⚡ Bonus Concept: Why not map() for looping over strings?
+
+.map() is available only on arrays, not strings.
+
+"automation".map(...) ❌ invalid.
+
+Use for...of to iterate characters in strings.
+
+
+🧭 Overall Learning Themes
+
+JS loops are data-type aware (object vs array vs string).
+
+Async control is only possible with for...of and while/do...while.
+
+.map() and .forEach() are functional, not control loops.
+
+Object.entries() bridges the gap between objects and array-style iteration.
+
+You now know when to use each construct efficiently — critical for writing clean Playwright automation and modern JS code.

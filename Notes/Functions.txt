@@ -1,0 +1,105 @@
+JavaScript Functions & Modern Concepts — Key Learnings
+1️⃣ Function Types
+Type	Syntax	Key Notes
+Function Declaration	function greet(name) { ... }	Hoisted — can be called before declaration.
+Function Expression	const square = function(n) { ... }	Stored in a variable; not hoisted.
+Arrow Function	const square = n => n * n	Concise; this behaves differently; implicit return for single expression.
+
+2️⃣ Default Parameters
+
+Use default values to make arguments optional.
+
+Example: function multiply(a, b = 2) {...}
+
+Prevents undefined issues when arguments are missing.
+
+3️⃣ Rest Parameters (...)
+
+Collects multiple arguments into an array.
+
+Must be last parameter.
+
+Works with loops (for...of) and array methods (forEach, reduce).
+
+Example:
+
+function sum(...nums) {
+  return nums.reduce((acc, n) => acc + n, 0);
+}
+
+
+Do not reuse the function name as a variable inside (sum = 0 is bad).
+
+4️⃣ Closures (Function Returning Function)
+
+Inner function remembers variables from outer function.
+
+Enables state retention, dynamic functions, private variables.
+
+Example:
+
+function makeMultiplier(x) {
+  return y => x * y;
+}
+const double = makeMultiplier(2);
+
+
+Arrow functions can also be used for concise closures.
+
+5️⃣ IIFE (Immediately Invoked Function Expression)
+
+Runs immediately after declaration.
+
+Useful for encapsulation and avoiding global scope pollution.
+
+Syntax:
+
+(function(){ console.log("IIFE"); })();
+(() => console.log("IIFE"))();
+
+6️⃣ Higher-Order Functions
+
+Functions that accept other functions as arguments or return functions.
+
+Example: filterArray(arr, conditionFn)
+
+Modern alternative: use .filter() for concise code.
+
+Encourages callback usage, essential for automation (Playwright, event handlers).
+
+7️⃣ forEach + Arrow Functions
+
+Iterate arrays with index and value.
+
+Clean and concise:
+
+arr.forEach((val, i) => console.log(i + ": " + val));
+
+
+Works well for logging, test steps, or reporting in automation scripts.
+
+8️⃣ Returning Values vs Printing
+
+Return: use when the value needs to be reused, passed, or tested.
+
+console.log: only for debugging/output, cannot be reused.
+
+9️⃣ Best Practices Learned
+
+Use const by default for variables and function expressions. Use let only if reassignment is needed. Avoid var.
+
+Separate concerns: functions should do one thing (return value vs print).
+
+Arrow functions for short, concise callbacks; function expressions for more flexible definitions.
+
+Closures + HOFs are essential patterns in modern JS, especially for state management and callbacks in automation.
+
+Default parameters + rest parameters make functions robust and flexible.
+
+✅ Practical Tips for Test Automation
+
+Use closures to retain test configuration or dynamic locators.
+
+Use higher-order functions to filter or process test data.
+
+Use arrow functions + forEach for sequential test steps or reporting logs.
