@@ -1,0 +1,894 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JS/TS String Methods – Interactive Cheat Sheet</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-elevated: #111827;
+      --card: #020617;
+      --accent: #38bdf8;
+      --accent-soft: #0f766e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #f97373;
+      --danger-soft: #7f1d1d;
+      --radius: 10px;
+      --shadow: 0 18px 40px rgba(0,0,0,0.6);
+      --transition: 0.18s ease-out;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      border-bottom: 1px solid rgba(148,163,184,0.18);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    header small {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.15), rgba(15,23,42,0.9));
+    }
+
+    main {
+      padding: 18px 24px 32px;
+      max-width: 1260px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      gap: 20px;
+    }
+
+    .sidebar {
+      width: 220px;
+      max-width: 220px;
+      min-width: 190px;
+      position: sticky;
+      top: 80px;
+      align-self: flex-start;
+    }
+
+    .sidebar-card {
+      background: linear-gradient(145deg, #020617, #020617, #111827);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar h2 {
+      font-size: 0.9rem;
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav-list button {
+      width: 100%;
+      text-align: left;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-list button span.tag {
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(56,189,248,0.08);
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.3);
+    }
+
+    .nav-list button:hover,
+    .nav-list button:focus-visible {
+      outline: none;
+      border-color: rgba(56,189,248,0.6);
+      background: radial-gradient(circle at top, rgba(56,189,248,0.2), rgba(15,23,42,0.96));
+      color: var(--text);
+    }
+
+    .nav-list button.active {
+      border-color: rgba(56,189,248,0.9);
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.25), rgba(15,23,42,0.98));
+      color: var(--text);
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 6px;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1 1 260px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 10px 8px 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top, #020617, #020617);
+      color: var(--text);
+      font-size: 0.8rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-box input::placeholder {
+      color: var(--muted);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.5);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .filter-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 3px 8px;
+      cursor: pointer;
+      background: rgba(15,23,42,0.9);
+      transition: var(--transition);
+    }
+
+    .filter-pill.active {
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.16);
+      color: var(--accent);
+    }
+
+    .section-card {
+      background: radial-gradient(circle at top left, #020617, #020617, #020617);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 14px 16px 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-card h2 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .section-card h2 span.label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .section-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .section-meta .badge {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 6px;
+      font-size: 0.75rem;
+    }
+
+    th, td {
+      border: 1px solid rgba(15,23,42,0.9);
+      padding: 6px 7px;
+      text-align: left;
+      vertical-align: top;
+      background: rgba(15,23,42,0.96);
+    }
+
+    thead th {
+      background: linear-gradient(to right, rgba(56,189,248,0.20), rgba(15,23,42,0.98));
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--muted);
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(15,23,42,0.96);
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      background: rgba(15,23,42,0.9);
+      padding: 1px 4px;
+      border-radius: 4px;
+      border: 1px solid rgba(148,163,184,0.24);
+    }
+
+    .gotchas {
+      margin-top: 4px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(239,68,68,0.4);
+      background: radial-gradient(circle at top left, rgba(127,29,29,0.9), #020617);
+      padding: 7px 9px;
+      font-size: 0.75rem;
+    }
+
+    .gotchas-title {
+      font-weight: 600;
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+    }
+
+    .gotchas ul {
+      margin: 0;
+      padding-left: 16px;
+      color: #fecaca;
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      font-size: 0.7rem;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 2px 8px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+    }
+
+    .pill.js { border-color: rgba(249,115,22,0.6); color: #fed7aa; }
+    .pill.ts { border-color: rgba(56,189,248,0.7); color: #bae6fd; }
+    .pill.safe { border-color: rgba(52,211,153,0.7); color: #bbf7d0; }
+
+    .highlight {
+      background: rgba(56,189,248,0.22) !important;
+      outline: 1px solid rgba(56,189,248,0.9);
+    }
+
+    .no-results {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 4px 0 0;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 8px 12px 14px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(30,64,175,0.6);
+      background: radial-gradient(circle at top, #020617, #020617);
+    }
+
+    @media (max-width: 960px) {
+      main {
+        flex-direction: column;
+      }
+      .sidebar {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+      }
+      .sidebar-card {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-list {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .chip-row {
+        justify-content: flex-start;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>JS/TS String Methods</h1>
+      <small>Interactive Cheat Sheet · Grouped · Typed · With Gotchas</small>
+    </div>
+    <div class="chip-row">
+      <div class="chip">JS / TS</div>
+      <div class="chip">String API</div>
+      <div class="chip">Interview-ready</div>
+    </div>
+  </header>
+
+  <main>
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <h2>Sections</h2>
+        <ul class="nav-list">
+          <li><button data-target="basic" class="active">1. Basic & Substrings <span class="tag">5</span></button></li>
+          <li><button data-target="validation">2. Validation & Search <span class="tag">8</span></button></li>
+          <li><button data-target="formatting">3. Transform & Format <span class="tag">8</span></button></li>
+          <li><button data-target="parsing">4. Parsing & Splitting <span class="tag">1</span></button></li>
+          <li><button data-target="unicode">5. Comparison & Unicode <span class="tag">3</span></button></li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input id="searchInput" type="search" placeholder="Search methods, examples, typings or best use…" />
+        </div>
+        <div class="filter-row">
+          <span>Quick filters:</span>
+          <span class="filter-pill active" data-filter="all">All</span>
+          <span class="filter-pill" data-filter="js">JS only</span>
+          <span class="filter-pill" data-filter="ts">TS heavy</span>
+          <span class="filter-pill" data-filter="regex">Regex related</span>
+          <span class="filter-pill" data-filter="substring">Substring</span>
+        </div>
+      </div>
+      <p class="no-results" id="noResults">No methods match your search/filter. Try a different term.</p>
+
+      <!-- 1. Basic & Substrings -->
+      <article class="section-card" data-section="basic">
+        <h2>1. Basic Access & Substrings <span class="label">Core indexing & slicing</span></h2>
+        <div class="section-meta">
+          <span class="badge">Immutable: all methods return new strings</span>
+          <div class="pill-group">
+            <span class="pill js">JS</span>
+            <span class="pill ts">TS typings</span>
+            <span class="pill safe">Side‑effect free</span>
+          </div>
+        </div>
+        <table data-group="basic">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Example</th>
+              <th>TS Typing</th>
+              <th>JS Typing</th>
+              <th>Best Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-tags="substring basic">
+              <td><code>length</code></td>
+              <td><code>"abc".length // 3</code></td>
+              <td><code>length: number</code></td>
+              <td><em>property</em></td>
+              <td>Validation, size checks, limits.</td>
+            </tr>
+            <tr data-tags="basic">
+              <td><code>charAt</code></td>
+              <td><code>"abc".charAt(1) // "b"</code></td>
+              <td><code>charAt(index: number): string</code></td>
+              <td><code>charAt(index)</code></td>
+              <td>Legacy character access (prefer <code>at</code> or <code>[i]</code>).</td>
+            </tr>
+            <tr data-tags="basic">
+              <td><code>at</code></td>
+              <td><code>"abc".at(-1) // "c"</code></td>
+              <td><code>at(index: number): string \| undefined</code></td>
+              <td><code>at(index)</code></td>
+              <td>Safe indexing, especially with negative indices.</td>
+            </tr>
+            <tr data-tags="substring basic">
+              <td><code>slice</code></td>
+              <td><code>"abc".slice(1) // "bc"</code></td>
+              <td><code>slice(start?: number, end?: number): string</code></td>
+              <td><code>slice(start, end)</code></td>
+              <td>Preferred substring method, supports negatives.</td>
+            </tr>
+            <tr data-tags="substring basic">
+              <td><code>substring</code></td>
+              <td><code>"abc".substring(1, 3) // "bc"</code></td>
+              <td><code>substring(start: number, end?: number): string</code></td>
+              <td><code>substring(start, end)</code></td>
+              <td>Legacy substring; avoid negatives, prefer <code>slice</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gotchas">
+          <div class="gotchas-title">⚠ Gotchas</div>
+          <ul>
+            <li><code>substring(-1)</code> is treated as <code>substring(0)</code> (negatives ignored).</li>
+            <li><code>slice(-1)</code> returns the last char; <code>substring(-1)</code> does not.</li>
+            <li><code>charAt</code> out of range → <code>""</code>, while <code>at</code> → <code>undefined</code>.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 2. Validation & Searching -->
+      <article class="section-card" data-section="validation">
+        <h2>2. Validation & Searching <span class="label">Contains, starts, ends, regex</span></h2>
+        <div class="section-meta">
+          <span class="badge">Search & validate input/output</span>
+          <div class="pill-group">
+            <span class="pill js">JS</span>
+            <span class="pill ts">TS typings</span>
+            <span class="pill">Regex heavy</span>
+          </div>
+        </div>
+        <table data-group="validation">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Example</th>
+              <th>TS Typing</th>
+              <th>JS Typing</th>
+              <th>Best Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-tags="validation">
+              <td><code>includes</code></td>
+              <td><code>"abc".includes("b") // true</code></td>
+              <td><code>includes(searchString: string, position?: number): boolean</code></td>
+              <td><code>includes(str, pos)</code></td>
+              <td>Readable <em>contains</em> check.</td>
+            </tr>
+            <tr data-tags="validation">
+              <td><code>startsWith</code></td>
+              <td><code>"abc".startsWith("a") // true</code></td>
+              <td><code>startsWith(searchString: string, position?: number): boolean</code></td>
+              <td><code>startsWith(str, pos)</code></td>
+              <td>Prefix validation (IDs, URLs, routes).</td>
+            </tr>
+            <tr data-tags="validation">
+              <td><code>endsWith</code></td>
+              <td><code>"abc".endsWith("c") // true</code></td>
+              <td><code>endsWith(searchString: string, length?: number): boolean</code></td>
+              <td><code>endsWith(str, length)</code></td>
+              <td>Suffix checks (file extensions, tokens).</td>
+            </tr>
+            <tr data-tags="validation">
+              <td><code>indexOf</code></td>
+              <td><code>"abc".indexOf("b") // 1</code></td>
+              <td><code>indexOf(searchString: string, position?: number): number</code></td>
+              <td><code>indexOf(str, pos)</code></td>
+              <td>Find position; <code>-1</code> if not found.</td>
+            </tr>
+            <tr data-tags="validation">
+              <td><code>lastIndexOf</code></td>
+              <td><code>"ababa".lastIndexOf("a") // 4</code></td>
+              <td><code>lastIndexOf(searchString: string, position?: number): number</code></td>
+              <td><code>lastIndexOf(str, pos)</code></td>
+              <td>Search from the end.</td>
+            </tr>
+            <tr data-tags="regex validation">
+              <td><code>match</code></td>
+              <td><code>"a1b2".match(/\d/g)</code></td>
+              <td><code>match(regexp: RegExp \| string): RegExpMatchArray \| null</code></td>
+              <td><code>match(regex)</code></td>
+              <td>Regex extraction; behaviour differs with and without <code>g</code>.</td>
+            </tr>
+            <tr data-tags="regex validation">
+              <td><code>matchAll</code></td>
+              <td><code>[... "a1b2".matchAll(/\d/g)]</code></td>
+              <td><code>matchAll(regexp: RegExp): IterableIterator&lt;RegExpMatchArray&gt;</code></td>
+              <td><code>matchAll(regex)</code></td>
+              <td>Iterate over all regex matches including groups.</td>
+            </tr>
+            <tr data-tags="regex validation">
+              <td><code>search</code></td>
+              <td><code>"abc123".search(/\d/) // 3</code></td>
+              <td><code>search(regexp: RegExp \| string): number</code></td>
+              <td><code>search(regex)</code></td>
+              <td>Index of first regex match, <code>-1</code> if none.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gotchas">
+          <div class="gotchas-title">⚠ Gotchas</div>
+          <ul>
+            <li><code>match</code> without <code>/g</code> returns a detailed match object, not just an array of strings.</li>
+            <li><code>matchAll</code> requires a <strong>global</strong> regex (<code>/.../g</code>); otherwise it throws.</li>
+            <li>Prefer <code>includes()</code> instead of <code>indexOf() !== -1</code> for readability.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 3. Transformation & Formatting -->
+      <article class="section-card" data-section="formatting">
+        <h2>3. Transformation & Formatting <span class="label">Trim, case, padding, replace</span></h2>
+        <div class="section-meta">
+          <span class="badge">UI, normalization, display formatting</span>
+          <div class="pill-group">
+            <span class="pill js">JS</span>
+            <span class="pill ts">TS typings</span>
+          </div>
+        </div>
+        <table data-group="formatting">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Example</th>
+              <th>TS Typing</th>
+              <th>JS Typing</th>
+              <th>Best Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-tags="format">
+              <td><code>toUpperCase</code></td>
+              <td><code>"hi".toUpperCase() // "HI"</code></td>
+              <td><code>toUpperCase(): string</code></td>
+              <td><code>toUpperCase()</code></td>
+              <td>Normalize casing for compare or display.</td>
+            </tr>
+            <tr data-tags="format">
+              <td><code>trim</code></td>
+              <td><code>" hi ".trim() // "hi"</code></td>
+              <td><code>trim(): string</code></td>
+              <td><code>trim()</code></td>
+              <td>Clean leading/trailing whitespace (forms, config).</td>
+            </tr>
+            <tr data-tags="format">
+              <td><code>padStart</code></td>
+              <td><code>"5".padStart(3, "0") // "005"</code></td>
+              <td><code>padStart(targetLength: number, padString?: string): string</code></td>
+              <td><code>padStart(len, pad)</code></td>
+              <td>Format IDs / counters / left-aligned numbers.</td>
+            </tr>
+            <tr data-tags="format">
+              <td><code>padEnd</code></td>
+              <td><code>"5".padEnd(3, "0") // "500"</code></td>
+              <td><code>padEnd(targetLength: number, padString?: string): string</code></td>
+              <td><code>padEnd(len, pad)</code></td>
+              <td>Align labels / table-like text.</td>
+            </tr>
+            <tr data-tags="format">
+              <td><code>repeat</code></td>
+              <td><code>"ab".repeat(3) // "ababab"</code></td>
+              <td><code>repeat(count: number): string</code></td>
+              <td><code>repeat(count)</code></td>
+              <td>Generate simple patterns / test data.</td>
+            </tr>
+            <tr data-tags="regex format">
+              <td><code>replace</code></td>
+              <td><code>"a-b-c".replace("-", "_") // "a_b-c"</code></td>
+              <td><code>replace(searchValue: string \| RegExp, replaceValue: string \| (substring, ...args) =&gt; string): string</code></td>
+              <td><code>replace(search, value)</code></td>
+              <td>Replace first match or use callback for dynamic replacement.</td>
+            </tr>
+            <tr data-tags="regex format">
+              <td><code>replaceAll</code></td>
+              <td><code>"a-b-c".replaceAll("-", "_") // "a_b_c"</code></td>
+              <td><code>replaceAll(searchValue: string \| RegExp, replaceValue: string \| (substring, ...args) =&gt; string): string</code></td>
+              <td><code>replaceAll(search, value)</code></td>
+              <td>Replace all occurrences; bulk cleanup/sanitization.</td>
+            </tr>
+            <tr data-tags="format">
+              <td><code>concat</code></td>
+              <td><code>"a".concat("b") // "ab"</code></td>
+              <td><code>concat(...strings: string[]): string</code></td>
+              <td><code>concat()</code></td>
+              <td>Legacy concatenation; prefer <code>+ </code>or template literals.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gotchas">
+          <div class="gotchas-title">⚠ Gotchas</div>
+          <ul>
+            <li><code>replace()</code> only replaces the <strong>first</strong> match; use <code>replaceAll()</code> or a global regex for all matches.</li>
+            <li><code>repeat()</code> throws a <code>RangeError</code> for negative or extremely large counts.</li>
+            <li><code>padStart()</code>/<code>padEnd()</code> never truncate; they only pad when string is shorter than target length.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 4. Parsing & Splitting -->
+      <article class="section-card" data-section="parsing">
+        <h2>4. Parsing & Splitting <span class="label">Strings → arrays</span></h2>
+        <div class="section-meta">
+          <span class="badge">Tokenization, CSV-like strings</span>
+          <div class="pill-group">
+            <span class="pill js">JS</span>
+            <span class="pill ts">TS typings</span>
+          </div>
+        </div>
+        <table data-group="parsing">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Example</th>
+              <th>TS Typing</th>
+              <th>JS Typing</th>
+              <th>Best Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-tags="parsing">
+              <td><code>split</code></td>
+              <td><code>"a,b,c".split(",") // ["a","b","c"]</code></td>
+              <td><code>split(separator?: string \| RegExp, limit?: number): string[]</code></td>
+              <td><code>split(sep, limit)</code></td>
+              <td>Tokenizing / parsing delimited strings or simple CSV-like data.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gotchas">
+          <div class="gotchas-title">⚠ Gotchas</div>
+          <ul>
+            <li><code>split("")</code> returns an array of characters.</li>
+            <li>No separator: <code>"abc".split()</code> → <code>["abc"]</code> (single element array).</li>
+            <li><code>split(",", 2)</code> limits the array length to 2 items.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 5. Comparison & Unicode -->
+      <article class="section-card" data-section="unicode">
+        <h2>5. Comparison & Unicode <span class="label">Locale-aware & Unicode-safe</span></h2>
+        <div class="section-meta">
+          <span class="badge">Sorting & Unicode correctness</span>
+          <div class="pill-group">
+            <span class="pill js">JS</span>
+            <span class="pill ts">TS typings</span>
+            <span class="pill">Internationalization</span>
+          </div>
+        </div>
+        <table data-group="unicode">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Example</th>
+              <th>TS Typing</th>
+              <th>JS Typing</th>
+              <th>Best Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-tags="unicode">
+              <td><code>localeCompare</code></td>
+              <td><code>"a".localeCompare("b") // -1</code></td>
+              <td><code>localeCompare(that: string, locales?: string \| string[], options?: Intl.CollatorOptions): number</code></td>
+              <td><code>localeCompare(str, locales, options)</code></td>
+              <td>Locale-aware sorting for UI lists / names.</td>
+            </tr>
+            <tr data-tags="unicode">
+              <td><code>normalize</code></td>
+              <td><code>"\u00E9".normalize("NFD")</code></td>
+              <td><code>normalize(form?: "NFC" \| "NFD" \| "NFKC" \| "NFKD"): string</code></td>
+              <td><code>normalize(form)</code></td>
+              <td>Normalize Unicode before equality checks or searching.</td>
+            </tr>
+            <tr data-tags="unicode basic">
+              <td><code>toString / valueOf</code></td>
+              <td><code>"abc".toString()</code></td>
+              <td><code>toString(): string</code></td>
+              <td><code>toString()</code></td>
+              <td>Implicit conversions; rarely used directly.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gotchas">
+          <div class="gotchas-title">⚠ Gotchas</div>
+          <ul>
+            <li>Two visually identical Unicode strings may differ internally (precomposed vs decomposed); use <code>normalize()</code> before <code>===</code> comparisons if needed.</li>
+            <li><code>localeCompare</code> is for sorting, not checking strict equality.</li>
+            <li><code>normalize()</code> defaults to <code>"NFC"</code> if no form is provided.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    Strings in JS/TS are immutable – all these methods return new values and never mutate the original.
+  </footer>
+
+  <script>
+    // Section navigation
+    const navButtons = document.querySelectorAll('.nav-list button');
+    const sections = document.querySelectorAll('.section-card');
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-target');
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        sections.forEach(section => {
+          if (section.getAttribute('data-section') === target) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    });
+
+    // Search/filter logic
+    const searchInput = document.getElementById('searchInput');
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const rows = document.querySelectorAll('tbody tr');
+    const noResults = document.getElementById('noResults');
+
+    let activeFilter = 'all';
+
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeFilter = pill.getAttribute('data-filter');
+        applyFilters();
+      });
+    });
+
+    searchInput.addEventListener('input', () => {
+      applyFilters();
+    });
+
+    function applyFilters() {
+      const term = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        row.classList.remove('highlight');
+        const text = row.innerText.toLowerCase();
+        const tags = (row.getAttribute('data-tags') || '').toLowerCase();
+
+        // Filter by pill (very simple tag-based)
+        let passFilter = true;
+        if (activeFilter === 'js') {
+          passFilter = !tags.includes('regex'); // silly but gives some distinction
+        } else if (activeFilter === 'ts') {
+          passFilter = true; // everything has TS; kept for future extensions
+        } else if (activeFilter === 'regex') {
+          passFilter = tags.includes('regex');
+        } else if (activeFilter === 'substring') {
+          passFilter = tags.includes('substring');
+        }
+
+        // Filter by search term
+        let passSearch = !term || text.includes(term);
+
+        if (passFilter && passSearch) {
+          row.style.display = '';
+          if (term && text.includes(term)) {
+            row.classList.add('highlight');
+          }
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>
