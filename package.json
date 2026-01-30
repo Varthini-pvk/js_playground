@@ -1,6 +1,7 @@
 {
   "name": "js_playground",
   "version": "1.0.0",
+  "type": "module",
   "description": "Hands-on JavaScript learning",
   "main": "H002_variable_scopes_swap_variables.js",
   "scripts": {},

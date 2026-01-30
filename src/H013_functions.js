@@ -122,5 +122,6 @@ const print = (arr) => {arr.forEach((value, index) =>
         console.log(index+": "+value);
     })}
 
-print([1,2,3,4,89])    
+print([1,2,3,4,89])  
+  
 
