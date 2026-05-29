@@ -1,5 +1,7 @@
 function longestSubstring(input:string): string
 {
+
+    if(input === null ||input.length === 0) return "";
     let startIndex = 0;
     let maxLength=0;
     let left =0;

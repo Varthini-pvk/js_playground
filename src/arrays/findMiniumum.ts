@@ -32,7 +32,7 @@
 
     for (const array of dataSet )
     {
-        console.log(`number of odd numbers ${countOddNumbers(array)}`);
+        console.log(`number of odd numbers ${findMinimum(array)}`);
 
     }
 

@@ -4,16 +4,14 @@
 
          if(array==null)
         {
-            throw("Error: Array cannot be null")
+            throw new Error("Error: Array cannot be null")
         }
        
         let start = 0;
         let end = array.length-1;
         while (end>start)
         {
-            const temp = array[start];
-            array[start] = array[end];
-            array[end] = temp;
+            [array[start], array[end]] = [array[end], array[start]];
             end--;
             start++;
 
@@ -24,7 +22,7 @@
 
     }
 
-    function run() {
+    function run1() {
 
     const dataSet: number[][] = [
         [1,2,3,6,7],
@@ -40,5 +38,8 @@
         console.log(`Reversed Array: ${reverseArray([...array])}`);
 
     }
+    
 
     }
+
+    run1();
